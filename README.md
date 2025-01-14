@@ -1,1 +1,1 @@
-Tutorial on how to setup CDEK Widged
+Tutorial on how to setup CDEK Widget
