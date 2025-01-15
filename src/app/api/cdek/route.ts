@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
-    const requestData: Record<string, any> = {};
+    const requestData: Record<string, unknown> = {};
     searchParams.forEach((value, key) => {
       if (key !== "action") {
         requestData[key] = value;
@@ -110,7 +110,7 @@ async function getAuthToken() {
   return result.access_token;
 }
 
-async function getOffices(authToken: any, requestData: any) {
+async function getOffices(authToken: string, requestData: any) {
   const params = {
     page: requestData.page || 0,
     size: requestData.size || 100,
@@ -122,7 +122,7 @@ async function getOffices(authToken: any, requestData: any) {
   return await httpRequest("deliverypoints", authToken, params);
 }
 
-async function calculate(authToken: any, requestData: any) {
+async function calculate(authToken: string, requestData: any) {
   return await httpRequest(
     "calculator/tarifflist",
     authToken,
@@ -132,8 +132,8 @@ async function calculate(authToken: any, requestData: any) {
 }
 
 async function httpRequest(
-  method: any,
-  authToken: any,
+  method: string,
+  authToken: string,
   data: any,
   useJson = false
 ) {
@@ -160,7 +160,7 @@ async function httpRequest(
     throw new Error(result.message || "Request failed");
   }
 
-  const responseHeaders: Record<string, any> = {};
+  const responseHeaders: Record<string, string> = {};
   response.headers.forEach((value, name) => {
     if (name.startsWith("x-")) {
       responseHeaders[name] = value;
@@ -170,7 +170,7 @@ async function httpRequest(
   return [result, responseHeaders];
 }
 
-function sendResponse(data: any, headers: any) {
+function sendResponse(data: unknown, headers: Record<string, string>) {
   return NextResponse.json(data, {
     status: 200,
     headers: {
@@ -181,7 +181,7 @@ function sendResponse(data: any, headers: any) {
   });
 }
 
-function sendValidationError(message: any) {
+function sendValidationError(message: string) {
   return NextResponse.json(
     { message },
     {
